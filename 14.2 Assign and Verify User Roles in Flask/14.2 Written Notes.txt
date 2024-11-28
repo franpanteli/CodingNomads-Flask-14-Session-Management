@@ -1,53 +1,53 @@
 -> Introduction to User Roles in Flask
-	-> This lesson explains how to assign and verify user roles in Flask applications
-	-> You'll learn to assign roles when users are created and verify those roles to control user access
-	-> The focus is on making sure users only perform actions they are allowed to do, using roles and permissions
+    -> This lesson explains how to assign and verify user roles in Flask applications
+    -> You'll learn to assign roles when users are created and verify those roles to control user access
+    -> The focus is on making sure users only perform actions they are allowed to do, using roles and permissions
 
 -> Role Assignment
-	-> Assigning roles should happen when a user is created, to avoid bugs later on
-	-> You can check the user's email during creation to assign them special roles like "Administrator"
-	-> The role is assigned using a database query that filters by the user's email and compares it with the admin email
-	-> This ensures the correct role is given to each user based on predefined criteria
+    -> Assigning roles should happen when a user is created, to avoid bugs later on
+    -> You can check the user's email during creation to assign them special roles like "Administrator"
+    -> The role is assigned using a database query that filters by the user's email and compares it with the admin email
+    -> This ensures the correct role is given to each user based on predefined criteria
 
 -> Role Verification
-	-> Helper methods are used to check if a user has certain permissions
-	-> These methods ensure users can access only the resources they are allowed to
-	-> You can create a `can()` method to check permissions, for example, checking if a user can moderate a comment or publish content
-	-> An `is_administrator()` method checks if a user has the "Administrator" permission
-	-> Custom classes can be created to handle permission checks for anonymous users, using Flask-Login's `AnonymousUserMixin`
+    -> Helper methods are used to check if a user has certain permissions
+    -> These methods ensure users can access only the resources they are allowed to
+    -> You can create a `can()` method to check permissions, for example, checking if a user can moderate a comment or publish content
+    -> An `is_administrator()` method checks if a user has the "Administrator" permission
+    -> Custom classes can be created to handle permission checks for anonymous users, using Flask-Login's `AnonymousUserMixin`
 
 -> Custom Decorators for View Functions
-	-> Custom decorators are used to check user permissions before they can access a view function
-	-> The `permission_required()` decorator checks if the user has the necessary permission to view or interact with a resource
-	-> The `admin_required()` decorator specifically checks if a user is an administrator
-	-> Decorators are stacked in a specific order, with the `login_required` decorator checking if the user is logged in first
-	-> Once logged in, further decorators ensure that the user has the correct permissions to access certain pages
+    -> Custom decorators are used to check user permissions before they can access a view function
+    -> The `permission_required()` decorator checks if the user has the necessary permission to view or interact with a resource
+    -> The `admin_required()` decorator specifically checks if a user is an administrator
+    -> Decorators are stacked in a specific order, with the `login_required` decorator checking if the user is logged in first
+    -> Once logged in, further decorators ensure that the user has the correct permissions to access certain pages
 
 -> Applying Custom Decorators
-	-> When applying decorators to view functions, ensure the correct order is followed
-	-> For example, `@login_required` should come before `@admin_required`
-	-> This ensures the user is authenticated before their permissions are checked
-	-> Using these decorators, you can easily restrict access to views based on user roles and permissions
+    -> When applying decorators to view functions, ensure the correct order is followed
+    -> For example, `@login_required` should come before `@admin_required`
+    -> This ensures the user is authenticated before their permissions are checked
+    -> Using these decorators, you can easily restrict access to views based on user roles and permissions
 
 -> Injecting Permissions into Templates
-	-> Permissions can be injected into templates to control what parts of a page are visible to the user
-	-> This allows for more granular control over page content, showing or hiding elements based on the user's permissions
-	-> Use the Flask `@app.context_processor` decorator to inject the `Permission` class into templates globally
-	-> This makes it easier to check permissions directly within templates without needing to pass them manually
+    -> Permissions can be injected into templates to control what parts of a page are visible to the user
+    -> This allows for more granular control over page content, showing or hiding elements based on the user's permissions
+    -> Use the Flask `@app.context_processor` decorator to inject the `Permission` class into templates globally
+    -> This makes it easier to check permissions directly within templates without needing to pass them manually
 
 -> Unit Tests for User Roles
-	-> It's important to test your role assignment and verification logic to ensure it works correctly
-	-> Unit tests should verify that roles are assigned properly when users are created
-	-> Tests should also check that users can only access resources they are permitted to based on their roles
-	-> Additionally, verify that default roles, such as "User", are automatically assigned when a new user is created
+    -> It's important to test your role assignment and verification logic to ensure it works correctly
+    -> Unit tests should verify that roles are assigned properly when users are created
+    -> Tests should also check that users can only access resources they are permitted to based on their roles
+    -> Additionally, verify that default roles, such as "User", are automatically assigned when a new user is created
 
 -> Final Steps
-	-> Don't forget to insert roles into the database and assign them to existing users
-	-> Perform a database migration to apply these changes across your application
-	-> After completing role assignments and verification, you can proceed to develop user profile pages
+    -> Don't forget to insert roles into the database and assign them to existing users
+    -> Perform a database migration to apply these changes across your application
+    -> After completing role assignments and verification, you can proceed to develop user profile pages
 
 -> Summary: How to Assign a User Role
-	-> Assign roles when users are created to avoid bugs and ensure smooth role management
-	-> Helper methods and decorators simplify the process of verifying user permissions
-	-> Injecting permissions into templates makes it easier to control page content based on user roles
-	-> Always test role assignment and permissions to ensure everything functions as expected
+    -> Assign roles when users are created to avoid bugs and ensure smooth role management
+    -> Helper methods and decorators simplify the process of verifying user permissions
+    -> Injecting permissions into templates makes it easier to control page content based on user roles
+    -> Always test role assignment and permissions to ensure everything functions as expected

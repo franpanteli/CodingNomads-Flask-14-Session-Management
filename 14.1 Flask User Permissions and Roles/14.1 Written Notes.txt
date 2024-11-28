@@ -1,47 +1,47 @@
--> You know what roles mean when it comes to a webapp and how users fit in
-	-> In this lesson, you’ll learn how to represent roles and user permissions in your database
-	-> You’ll add a new column for user permissions in the roles table
-	-> The new integer column will represent the permissions a user has
-	-> The combination of permissions can be represented by a number, which uses binary values
+-> You know what roles mean when it comes to a web app and how users fit in
+    -> In this lesson, you’ll learn how to represent roles and user permissions in your database
+    -> You’ll add a new column for user permissions in the roles table
+    -> The new integer column will represent the permissions a user has
+    -> The combination of permissions can be represented by a number, which uses binary values
 
 -> Adding User Permissions to Roles
-	-> You’ll add a new column for permissions in the roles table
-	-> Permissions are represented as binary numbers
-	-> A constructor is added to set the permissions to 0 by default
-	-> You’ll use a boolean value for the default role, which automatically applies permissions to new users
-	-> The "normal user" role is typically assigned by default
+    -> You’ll add a new column for permissions in the roles table
+    -> Permissions are represented as binary numbers
+    -> A constructor is added to set the permissions to 0 by default
+    -> You’ll use a boolean value for the default role, which automatically applies permissions to new users
+    -> The "normal user" role is typically assigned by default
 
 -> What are User Permissions?
-	-> Permissions determine what tasks a user can and can’t do
-	-> In the Ragtime app example, permissions include tasks like "Follow other users", "Comment on compositions", "Publish compositions", etc.
-	-> Each task has an associated permission name and value
-	-> Permission values follow a binary pattern, represented in decimal and binary numbers
+    -> Permissions determine what tasks a user can and can’t do
+    -> In the Ragtime app example, permissions include tasks like "Follow other users", "Comment on compositions", "Publish compositions", etc.
+    -> Each task has an associated permission name and value
+    -> Permission values follow a binary pattern, represented in decimal and binary numbers
 
 -> Example of Permission Values in Binary
-	-> FOLLOW: 1 (binary 00001)
-	-> COMMENT: 2 (binary 00010)
-	-> PUBLISH: 4 (binary 00100)
-	-> MODERATE: 8 (binary 01000)
-	-> ADMIN: 16 (binary 10000)
+    -> FOLLOW: 1 (binary 00001)
+    -> COMMENT: 2 (binary 00010)
+    -> PUBLISH: 4 (binary 00100)
+    -> MODERATE: 8 (binary 01000)
+    -> ADMIN: 16 (binary 10000)
 
 -> Manipulating User Permissions with Python
-	-> You can define functions to make handling permissions easier
-	-> Functions like add_permission(), remove_permission(), and reset_permissions() help manage user permissions
-	-> Permissions are updated by adding or removing permission values
-	-> The has_permission() method uses bitwise AND to check if a user has a certain permission
+    -> You can define functions to make handling permissions easier
+    -> Functions like add_permission(), remove_permission(), and reset_permissions() help manage user permissions
+    -> Permissions are updated by adding or removing permission values
+    -> The has_permission() method uses bitwise AND to check if a user has a certain permission
 
 -> Example of Permission Manipulation
-	-> Add permission: Checks if the user already has the permission before adding it
-	-> Remove permission: Removes the permission if the user has it
-	-> Reset permissions: Clears all permissions
+    -> Add permission: Checks if the user already has the permission before adding it
+    -> Remove permission: Removes the permission if the user has it
+    -> Reset permissions: Clears all permissions
 
 -> Updating Roles with Permissions
-	-> A static method can be used to insert roles with their mapped permissions
-	-> The insert_roles() method defines a mapping of role names with corresponding permissions
-	-> The method ensures roles are only inserted if they don’t already exist in the database
-	-> The default role is set to ‘User’, and roles like ‘Moderator’ and ‘Administrator’ are defined with additional permissions
+    -> A static method can be used to insert roles with their mapped permissions
+    -> The insert_roles() method defines a mapping of role names with corresponding permissions
+    -> The method ensures roles are only inserted if they don’t already exist in the database
+    -> The default role is set to ‘User’, and roles like ‘Moderator’ and ‘Administrator’ are defined with additional permissions
 
 -> The new roles and permissions system helps manage user permissions more efficiently in Flask apps
-	-> Each role can be given specific permissions, and new roles can be added easily
-	-> Permissions are represented as binary values, which helps with efficient checks and manipulations
-	-> This method avoids needing to create extra logic for assigning permissions to individual users
+    -> Each role can be given specific permissions, and new roles can be added easily
+    -> Permissions are represented as binary values, which helps with efficient checks and manipulations
+    -> This method avoids needing to create extra logic for assigning permissions to individual users
