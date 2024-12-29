@@ -1,10 +1,10 @@
-# CodingNomads-Flask-Session-Management
+# CodingNomads-Flask-14-Session-Management
 I got Siri to read out my notes on the computer and recorded Voice Memos of these. These can be downloaded and re-listened to, without having to re-read through my notes again. The content of these notes is also sumarised in word clouds in each subdirectory in this repository 
 Here is an example GIF showing the application in action:
 
 ![App demo](https://github.com/franpanteli/12/blob/main/12%20Notes%20Word%20Cloud%20Giff.gif)
 [Used a word cloud generator](https://wordart.com/create)
-# Module-3-Python-Objects-and-Data-Structures
+# CodingNomads-Flask-14-Session-Management
 ### Repository Overview
 
 This repository contains my notes and project files for the third module of a Python 'bootcamp' I completed as part of my independent learning. This was an in-depth Udemy course with 156 video lectures and exercises, to be completed in a Jupyter environment. This repository includes my notes on the videos for this module and the slides from the lectures which they were made on.
@@ -63,5 +63,5 @@ This repository is organised into the following sections:
 
 ### To Clone This Repository
 ```
-git clone https://github.com/franpanteli/CodingNomads-Flask-Session-Management.git
+git clone https://github.com/franpanteli/CodingNomads-Flask-14-Session-Management.git
 ```
