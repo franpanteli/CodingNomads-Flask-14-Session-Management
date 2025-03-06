@@ -1,108 +1,108 @@
-Integrating Permissions into a Database
+-> integrating permissions into a database  
 
--> Add Columns to the Role Model
-   -> Default Role Column: Marks a role as the default role (e.g., user role)
-   -> Permissions Column: Encodes individual permissions as a single value
-   Example:
-   class Role(db.Model):
-       id = db.Column(db.Integer, primary_key=True)
-       name = db.Column(db.String(64), unique=True)
-       default = db.Column(db.Boolean, default=False)
-       permissions = db.Column(db.Integer, default=0)
+-> add columns to the role model  
+   -> default role column: marks a role as the default role (e.g., user role)  
+   -> permissions column: encodes individual permissions as a single value  
+   example:  
+   class Role(db.Model):  
+       id = db.Column(db.Integer, primary_key=True)  
+       name = db.Column(db.String(64), unique=True)  
+       default = db.Column(db.Boolean, default=False)  
+       permissions = db.Column(db.Integer, default=0)  
 
--> Override Role Class Constructor
-   -> Ensure permissions are set to `0` if not initialised
-   Example:
-   def __init__(self, **kwargs):
-       super().__init__(**kwargs)
-       if self.permissions is None:
-           self.permissions = 0
+-> override role class constructor  
+   -> ensure permissions are set to `0` if not initialised  
+   example:  
+   def __init__(self, **kwargs):  
+       super().__init__(**kwargs)  
+       if self.permissions is None:  
+           self.permissions = 0  
 
--> Define Individual Permissions
-   -> Create a class holding constants, where each constant is a power of 2
-   Example:
-   class Permission:
-       READ = 0x01
-       WRITE = 0x02
-       ADMIN = 0x04
+-> define individual permissions  
+   -> create a class holding constants, where each constant is a power of 2  
+   example:  
+   class Permission:  
+       READ = 0x01  
+       WRITE = 0x02  
+       ADMIN = 0x04  
 
--> Helper Functions for Permissions
-   -> Add Permission
-      -> Check if the permission is not already granted using an `if not` condition
-      Example:
-      def add_permission(self, perm):
-          if not self.has_permission(perm):
-              self.permissions |= perm
+-> helper functions for permissions  
+   -> add permission  
+      -> check if the permission is not already granted using an `if not` condition  
+      example:  
+      def add_permission(self, perm):  
+          if not self.has_permission(perm):  
+              self.permissions |= perm  
 
-   -> Remove Permission
-      -> Perform the reverse operation of adding a permission
-      Example:
-      def remove_permission(self, perm):
-          if self.has_permission(perm):
-              self.permissions &= ~perm
+   -> remove permission  
+      -> perform the reverse operation of adding a permission  
+      example:  
+      def remove_permission(self, perm):  
+          if self.has_permission(perm):  
+              self.permissions &= ~perm  
 
-   -> Reset Permissions
-      -> Set the permission value to `0`
-      Example:
-      def reset_permissions(self):
-          self.permissions = 0
+   -> reset permissions  
+      -> set the permission value to `0`  
+      example:  
+      def reset_permissions(self):  
+          self.permissions = 0  
 
-   -> Has Permission
-      -> Check if a particular permission exists
-         -> Use a bitwise AND with the current permissions
-         -> If the result > 0, the permission exists
-      Example:
-      def has_permission(self, perm):
-          return self.permissions & perm > 0
+   -> has permission  
+      -> check if a particular permission exists  
+         -> use a bitwise AND with the current permissions  
+         -> if the result > 0, the permission exists  
+      example:  
+      def has_permission(self, perm):  
+          return self.permissions & perm > 0  
 
--> Test Helper Functions in Flask Shell
-   -> Create a role and test the helper functions interactively
-   Example:
-   from app.models import Role, Permission
-   admin_role = Role(name="Admin")
-   admin_role.add_permission(Permission.ADMIN)
-   admin_role.has_permission(Permission.ADMIN)  # True
-   admin_role.remove_permission(Permission.ADMIN)
-   admin_role.has_permission(Permission.ADMIN)  # False
+-> test helper functions in flask shell  
+   -> create a role and test the helper functions interactively  
+   example:  
+   from app.models import Role, Permission  
+   admin_role = Role(name="Admin")  
+   admin_role.add_permission(Permission.ADMIN)  
+   admin_role.has_permission(Permission.ADMIN)  # True  
+   admin_role.remove_permission(Permission.ADMIN)  
+   admin_role.has_permission(Permission.ADMIN)  # False  
 
--> Create a Static Method to Automate Role Setup
-   -> Set up roles for users, moderators, and administrators
-      -> Users: Basic permissions
-      -> Moderators: One more permission than users
-      -> Admin: All permissions
-   -> Set the name of the default role as "user"
-   -> Iterate through a dictionary of roles
-      -> If the role doesn't already exist, create it
-      -> Reset and build the roles using dictionary values
-      -> Set the flag for the default role
-   Example:
-   class Role(db.Model):
-       # Existing columns and methods...
+-> create a static method to automate role setup  
+   -> set up roles for users, moderators, and administrators  
+      -> users: basic permissions  
+      -> moderators: one more permission than users  
+      -> admin: all permissions  
+   -> set the name of the default role as "user"  
+   -> iterate through a dictionary of roles  
+      -> if the role doesn't already exist, create it  
+      -> reset and build the roles using dictionary values  
+      -> set the flag for the default role  
+   example:  
+   class Role(db.Model):  
+       # existing columns and methods...  
 
-       @staticmethod
-       def insert_roles():
-           roles = {
-               'User': [Permission.READ],
-               'Moderator': [Permission.READ, Permission.WRITE],
-               'Administrator': [Permission.READ, Permission.WRITE, Permission.ADMIN]
-           }
-           default_role = 'User'
-           for name, perms in roles.items():
-               role = Role.query.filter_by(name=name).first()
-               if role is None:
-                   role = Role(name=name)
-               role.reset_permissions()
-               for perm in perms:
-                   role.add_permission(perm)
-               role.default = (role.name == default_role)
-               db.session.add(role)
-           db.session.commit()
+       @staticmethod  
+       def insert_roles():  
+           roles = {  
+               'User': [Permission.READ],  
+               'Moderator': [Permission.READ, Permission.WRITE],  
+               'Administrator': [Permission.READ, Permission.WRITE, Permission.ADMIN]  
+           }  
+           default_role = 'User'  
+           for name, perms in roles.items():  
+               role = Role.query.filter_by(name=name).first()  
+               if role is None:  
+                   role = Role(name=name)  
+               role.reset_permissions()  
+               for perm in perms:  
+                   role.add_permission(perm)  
+               role.default = (role.name == default_role)  
+               db.session.add(role)  
+           db.session.commit()  
 
--> Test the Static Method in Flask Shell
-   -> Launch a Flask shell and call the static method
-   Example:
-   from app.models import Role
-   Role.insert_roles()
+-> test the static method in flask shell  
+   -> launch a flask shell and call the static method  
+   example:  
+   from app.models import Role  
+   Role.insert_roles()  
 
--> Automate Role Setup for New Databases
-   -> Call the static method whenever a new database is started to avoid manually adding roles
+-> automate role setup for new databases  
+   -> call the static method whenever a new database is started to avoid manually adding roles  
